@@ -1,11 +1,15 @@
 package com.mealplanner;
 
 public class Dish {
-    public String name;
+    private String name;
     // private Recipe recipe;
     // private Intgredient[] ingredients;
 
-    public Dish(String selectedName) {
-        name = selectedName;
+    public String getName() {
+        return this.name;
+    }
+
+    public Dish(String name) {
+        this.name = name;
     }
 }

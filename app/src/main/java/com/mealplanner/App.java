@@ -1,18 +1,22 @@
 package com.mealplanner;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
-    Dish[] dishes;
+    private ArrayList<Dish> dishes;
+
+    public App() {
+        this.dishes = new ArrayList<>();
+    }
 
     public static void main(String[] args) {
-        Dish testDish1 = new Dish("Burrito");
-        Dish testDish2 = new Dish("Burger");
-        Dish testDish3 = new Dish("Taco");
-
         App app = new App();
-        app.dishes = new Dish[] { testDish1, testDish2, testDish3 };
-        // app.printDishes();
+
+        app.dishes.add(new Dish("Burrito"));
+        app.dishes.add(new Dish("Burger"));
+        app.dishes.add(new Dish("Taco"));
+
         app.repl();
     }
 
@@ -21,7 +25,7 @@ public class App {
         while (true) {
             System.out.print("meal-planner > ");
             if (!scanner.hasNextLine()) {
-                break; // no more input
+                break;
             }
             String input = scanner.nextLine();
             input = input.trim().toLowerCase();
@@ -50,7 +54,7 @@ public class App {
         System.out.println("Dishes");
         System.out.println("------------");
         for (Dish dish : dishes) {
-            System.out.println(dish.name);
+            System.out.println(dish.getName());
         }
         System.out.println("");
     }
