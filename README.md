@@ -2,6 +2,14 @@
 
 An app to save the meals I enjoy and keep track of groceries
 
+## To Do
+
+- Make REPL
+- Save dishes in JSON file
+- Make ingredient class
+- Make recipie class
+- Update dishes class
+
 ## Functional Requirements
 
 - View list of all meals
