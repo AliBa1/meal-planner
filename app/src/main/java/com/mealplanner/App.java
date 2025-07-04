@@ -4,11 +4,29 @@
 package com.mealplanner;
 
 public class App {
+    Dish[] dishes;
+
     public String getGreeting() {
         return "Hello World!";
     }
 
+    public void printDishes() {
+        System.out.println("Dishes");
+        System.out.println("------------");
+        for (Dish dish : dishes) {
+            System.out.println(dish.name);
+        }
+        System.out.println("");
+    }
+
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        Dish testDish1 = new Dish("Burrito");
+        Dish testDish2 = new Dish("Burger");
+        Dish testDish3 = new Dish("Taco");
+
+        App app = new App();
+        app.dishes = new Dish[] { testDish1, testDish2, testDish3 };
+        // System.out.println(new App().getGreeting());
+        app.printDishes();
     }
 }
