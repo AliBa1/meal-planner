@@ -1,7 +1,9 @@
 # meal-planner
+
 An app to save the meals I enjoy and keep track of groceries
 
 ## Functional Requirements
+
 - View list of all meals
 - View recipe for meal
 - Add meal
@@ -16,7 +18,9 @@ An app to save the meals I enjoy and keep track of groceries
 - Export grocery list
 
 ## Frontend
-Start as CLI app then possibly make small website
+
+REPL to use the program
 
 ## Database
+
 JSON file or SQLite
