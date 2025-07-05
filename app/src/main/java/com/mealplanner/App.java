@@ -51,6 +51,7 @@ public class App {
     public void addDish() {
         System.out.print("Dish Name: ");
         String dishName = scanner.nextLine();
+        dishName = dishName.trim();
 
         Dish newDish = new Dish(dishName);
         db.addDish(newDish);
@@ -58,6 +59,12 @@ public class App {
 
     public void printDishes() {
         ArrayList<Dish> dishes = db.getAllDishes();
+
+        if (dishes.isEmpty()) {
+            System.out.println("You have not added any dishes");
+            System.out.println("Use the 'add dish' command to add a dish");
+            return;
+        }
 
         System.out.println("Dishes");
         System.out.println("------------");
