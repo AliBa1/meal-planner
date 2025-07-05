@@ -21,6 +21,9 @@ Windows:
 
 ## To Do
 
+- Write tests for database class
+- Add get dish command
+- Add edit dish command
 - Make ingredient class
 - Make recipie class
 - Update dishes class

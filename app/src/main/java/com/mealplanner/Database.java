@@ -26,7 +26,8 @@ public class Database {
             }
             statement = connection.createStatement();
 
-            statement.execute("CREATE TABLE IF NOT EXISTS dishes (name TEXT PRIMARY KEY)");
+            statement.execute(
+                    "CREATE TABLE IF NOT EXISTS dishes (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE)");
         } catch (SQLException e) {
             e.printStackTrace(System.err);
         }
@@ -40,6 +41,30 @@ public class Database {
             return false;
         }
         return true;
+    }
+
+    public boolean updateDish(Dish oldDish, Dish updatedDish) {
+        try {
+            statement.execute(String.format("UPDATE dishes SET name = %s WHERE name = %s", oldDish.getName(),
+                    updatedDish.getName()));
+        } catch (SQLException e) {
+            e.printStackTrace(System.err);
+            return false;
+        }
+        return true;
+    }
+
+    public Dish getDishByName(String name) {
+        try {
+            ResultSet result = statement.executeQuery(String.format("SELECT * FROM dishes WHERE name = %s", name));
+            if (result.next()) {
+                String resultDishName = result.getString("name");
+                return new Dish(resultDishName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.err);
+        }
+        return null;
     }
 
     public ArrayList<Dish> getAllDishes() {
