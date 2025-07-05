@@ -15,8 +15,8 @@ macOS or Linux:
 Windows:
 
 ```bash
-./gradlew build
-./gradlew run --console=plain
+gradlew build
+gradlew run --console=plain
 ```
 
 ## To Do
