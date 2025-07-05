@@ -4,24 +4,19 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
-    private ArrayList<Dish> dishes;
+    private Database db = new Database();
+    private Scanner scanner = new Scanner(System.in);
 
     public App() {
-        this.dishes = new ArrayList<>();
     }
 
     public static void main(String[] args) {
         App app = new App();
 
-        app.dishes.add(new Dish("Burrito"));
-        app.dishes.add(new Dish("Burger"));
-        app.dishes.add(new Dish("Taco"));
-
         app.repl();
     }
 
     public void repl() {
-        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("meal-planner > ");
             if (!scanner.hasNextLine()) {
@@ -41,6 +36,9 @@ public class App {
                 case "print dishes":
                     printDishes();
                     break;
+                case "add dish":
+                    addDish();
+                    break;
 
                 default:
                     System.out.println("That command doesn't exist! Try again.");
@@ -50,7 +48,17 @@ public class App {
         scanner.close();
     }
 
+    public void addDish() {
+        System.out.print("Dish Name: ");
+        String dishName = scanner.nextLine();
+
+        Dish newDish = new Dish(dishName);
+        db.addDish(newDish);
+    }
+
     public void printDishes() {
+        ArrayList<Dish> dishes = db.getAllDishes();
+
         System.out.println("Dishes");
         System.out.println("------------");
         for (Dish dish : dishes) {
