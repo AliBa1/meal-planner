@@ -12,4 +12,9 @@ public class Dish {
     public Dish(String name) {
         this.name = name;
     }
+
+    public void print() {
+        System.out.println(this.name);
+        System.out.println();
+    }
 }

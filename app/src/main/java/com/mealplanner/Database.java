@@ -45,8 +45,8 @@ public class Database {
 
     public boolean updateDish(Dish oldDish, Dish updatedDish) {
         try {
-            statement.execute(String.format("UPDATE dishes SET name = %s WHERE name = %s", oldDish.getName(),
-                    updatedDish.getName()));
+            statement.execute(String.format("UPDATE dishes SET name = '%s' WHERE name = '%s'", updatedDish.getName(),
+                    oldDish.getName()));
         } catch (SQLException e) {
             e.printStackTrace(System.err);
             return false;
@@ -56,7 +56,7 @@ public class Database {
 
     public Dish getDishByName(String name) {
         try {
-            ResultSet result = statement.executeQuery(String.format("SELECT * FROM dishes WHERE name = %s", name));
+            ResultSet result = statement.executeQuery(String.format("SELECT * FROM dishes WHERE name = '%s'", name));
             if (result.next()) {
                 String resultDishName = result.getString("name");
                 return new Dish(resultDishName);

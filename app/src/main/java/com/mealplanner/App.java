@@ -41,25 +41,49 @@ public class App {
                     System.out.println("Meal Planner Commands");
                     System.out.println("print dishes: view all saved dishes");
                     System.out.println("add dish: adds a dish to the list of dishes");
+                    System.out.println("get dish: gets a dish by name and prints it");
+                    System.out.println("edit dish: edit a dish");
                     System.out.println();
                     break;
                 case "print dishes":
                     printDishes();
                     break;
                 case "add dish":
-                    System.out.print("Dish Name: ");
-                    String dishName = scanner.nextLine();
-                    dishName = dishName.trim();
+                    String dishName = getDishName();
 
                     addDish(dishName);
                     break;
+                case "get dish":
+                    dishName = getDishName();
 
+                    Dish retrievedDish = db.getDishByName(dishName);
+                    retrievedDish.print();
+                    break;
+                case "edit dish":
+                    dishName = getDishName();
+
+                    Dish oldDish = db.getDishByName(dishName);
+                    oldDish.print();
+
+                    System.out.print("New Dish Name: ");
+                    String newDishName = scanner.nextLine();
+                    newDishName = newDishName.trim();
+                    Dish newDish = new Dish(newDishName);
+                    db.updateDish(oldDish, newDish);
+                    break;
                 default:
                     System.out.println("That command doesn't exist! Try again.");
                     break;
             }
         }
         scanner.close();
+    }
+
+    private String getDishName() {
+        System.out.print("Dish Name: ");
+        String dishName = scanner.nextLine();
+        dishName = dishName.trim();
+        return dishName;
     }
 
     public boolean addDish(String name) {
