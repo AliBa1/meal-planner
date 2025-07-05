@@ -12,4 +12,38 @@ class AppTest {
     // App classUnderTest = new App();
     // assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
     // }
+
+    @Test
+    void appRunsWithoutExecptionNoFlags() {
+        String[] args = new String[] {};
+        App.main(args);
+    }
+
+    @Test
+    void appRunsWithoutExecptionTestFlag() {
+        String[] args = { "test" };
+        App.main(args);
+    }
+
+    @Test
+    void appExitsOnExitCommand() {
+        String[] args = { "test" };
+        App.main(args);
+    }
+
+    @Test
+    void appAddDishWorks() {
+        App testApp = new App(true);
+
+        assertTrue(testApp.addDish("Pizza"));
+    }
+
+    @Test
+    void appAddDishDuplicate() {
+        App testApp = new App(true);
+
+        testApp.addDish("Pizza");
+        assertFalse(testApp.addDish("Pizza"));
+    }
+
 }

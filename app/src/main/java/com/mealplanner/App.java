@@ -4,14 +4,24 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
-    private Database db = new Database();
+    private Database db;
     private Scanner scanner = new Scanner(System.in);
 
-    public App() {
+    public App(boolean isTest) {
+        if (isTest) {
+            db = new Database(true);
+        } else {
+            db = new Database(false);
+        }
     }
 
     public static void main(String[] args) {
-        App app = new App();
+        App app;
+        if (args.length > 0 && args[0].equals("test")) {
+            app = new App(true);
+        } else {
+            app = new App(false);
+        }
 
         app.repl();
     }
@@ -37,7 +47,11 @@ public class App {
                     printDishes();
                     break;
                 case "add dish":
-                    addDish();
+                    System.out.print("Dish Name: ");
+                    String dishName = scanner.nextLine();
+                    dishName = dishName.trim();
+
+                    addDish(dishName);
                     break;
 
                 default:
@@ -48,13 +62,9 @@ public class App {
         scanner.close();
     }
 
-    public void addDish() {
-        System.out.print("Dish Name: ");
-        String dishName = scanner.nextLine();
-        dishName = dishName.trim();
-
-        Dish newDish = new Dish(dishName);
-        db.addDish(newDish);
+    public boolean addDish(String name) {
+        Dish newDish = new Dish(name);
+        return db.addDish(newDish);
     }
 
     public void printDishes() {
