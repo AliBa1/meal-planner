@@ -2,10 +2,25 @@
 
 An app to save the meals I enjoy and keep track of groceries
 
+## To Run Program
+
+From the root of the project
+macOS or Linux:
+
+```bash
+./gradlew build
+./gradlew run --console=plain
+```
+
+Windows:
+
+```bash
+./gradlew build
+./gradlew run --console=plain
+```
+
 ## To Do
 
-- Make REPL
-- Save dishes in JSON file
 - Make ingredient class
 - Make recipie class
 - Update dishes class
@@ -27,8 +42,8 @@ An app to save the meals I enjoy and keep track of groceries
 
 ## Frontend
 
-REPL to use the program
+REPL
 
 ## Database
 
-JSON file or SQLite
+SQLite
