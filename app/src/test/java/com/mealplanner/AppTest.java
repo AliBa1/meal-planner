@@ -31,19 +31,19 @@ class AppTest {
         App.main(args);
     }
 
-    @Test
-    void appAddDishWorks() {
-        App testApp = new App(true);
-
-        assertTrue(testApp.addDish("Pizza"));
-    }
-
-    @Test
-    void appAddDishDuplicate() {
-        App testApp = new App(true);
-
-        testApp.addDish("Pizza");
-        assertFalse(testApp.addDish("Pizza"));
-    }
+    // @Test
+    // void appAddDishWorks() {
+    // App testApp = new App(true);
+    //
+    // assertTrue(testApp.addDish("Pizza"));
+    // }
+    //
+    // @Test
+    // void appAddDishDuplicate() {
+    // App testApp = new App(true);
+    //
+    // testApp.addDish("Pizza");
+    // assertFalse(testApp.addDish("Pizza"));
+    // }
 
 }

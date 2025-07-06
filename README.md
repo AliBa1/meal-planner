@@ -21,11 +21,8 @@ gradlew run --console=plain
 
 ## To Do
 
-- Write tests for database class
-- Add get dish command
-- Add edit dish command
 - Make ingredient class
-- Make recipie class
+- Make recipe class
 - Update dishes class
 
 ## Functional Requirements

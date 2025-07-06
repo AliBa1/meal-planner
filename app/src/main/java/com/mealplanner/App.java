@@ -1,6 +1,7 @@
 package com.mealplanner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class App {
@@ -51,6 +52,9 @@ public class App {
                 case "add dish":
                     String dishName = getDishName();
 
+                    // System.out.println("[quantity] [unit] [name] (ex: 0.75 cups Milk) ");
+                    // System.out.println("Ingredient: ");
+
                     addDish(dishName);
                     break;
                 case "get dish":
@@ -66,8 +70,7 @@ public class App {
                     oldDish.print();
 
                     System.out.print("New Dish Name: ");
-                    String newDishName = scanner.nextLine();
-                    newDishName = newDishName.trim();
+                    String newDishName = scanner.nextLine().trim();
                     Dish newDish = new Dish(newDishName);
                     db.updateDish(oldDish, newDish);
                     break;
@@ -81,15 +84,98 @@ public class App {
 
     private String getDishName() {
         System.out.print("Dish Name: ");
-        String dishName = scanner.nextLine();
-        dishName = dishName.trim();
+        String dishName = scanner.nextLine().trim();
         return dishName;
     }
 
+    // chatgpt version
     public boolean addDish(String name) {
         Dish newDish = new Dish(name);
-        return db.addDish(newDish);
+
+        System.out.println("Enter ingredients (submit with an empty name to finish)");
+        System.out.println("Available units: " + Arrays.toString(Unit.values()));
+
+        while (true) {
+            System.out.print("Ingredient Name: ");
+            String ingredientName = scanner.nextLine().trim();
+            if (ingredientName.isEmpty()) {
+                break;
+            }
+
+            float quantity = 0;
+            while (true) {
+                System.out.print("Quantity (ex: 0.5): ");
+                String quantityInput = scanner.nextLine().trim();
+                try {
+                    quantity = Float.parseFloat(quantityInput);
+                    if (quantity <= 0) {
+                        System.out.println("Please enter a positive number.");
+                        continue;
+                    }
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid number. Try again.");
+                }
+            }
+
+            Unit unit = null;
+            while (true) {
+                System.out.print("Unit (ex: grams, cups): ");
+                String unitInput = scanner.nextLine().trim().toUpperCase();
+                try {
+                    unit = Unit.valueOf(unitInput);
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid unit. Choose from: " + Arrays.toString(Unit.values()));
+                }
+            }
+
+            Ingredient ingredient = new Ingredient(ingredientName);
+            ingredient.setQuantity(quantity);
+            ingredient.setUnit(unit);
+
+            newDish.addIngredient(ingredient);
+            System.out.println("✓ Ingredient added.\n");
+        }
+
+        boolean success = db.addDish(newDish);
+        if (success) {
+            System.out.println("Dish added successfully!");
+        } else {
+            System.out.println("Failed to add dish.");
+        }
+        return success;
     }
+
+    // public boolean addDish(String name) {
+    // Dish newDish = new Dish(name);
+    //
+    // System.out.println("Enter ingredients (submit with an empty name to
+    // finish)");
+    //
+    // while (true) {
+    // System.out.print("Ingredient Name: ");
+    // String ingredientName = scanner.nextLine().trim();
+    // if (ingredientName.isEmpty()) {
+    // break;
+    // }
+    //
+    // System.out.print("Quantity (ex: 0.5): ");
+    // float quantity = scanner.nextFloat();
+    // scanner.nextLine();
+    //
+    // System.out.print("Unit (ex: grams, cups): ");
+    // String unitInput = scanner.nextLine().trim().toUpperCase();
+    // Unit unit = Unit.valueOf(unitInput);
+    //
+    // Ingredient ingredient = new Ingredient(ingredientName);
+    // ingredient.setQuantity(quantity);
+    // ingredient.setUnit(unit);
+    //
+    // newDish.addIngredient(ingredient);
+    // }
+    // return db.addDish(newDish);
+    // }
 
     public void printDishes() {
         ArrayList<Dish> dishes = db.getAllDishes();
