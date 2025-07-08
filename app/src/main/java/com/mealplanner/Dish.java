@@ -3,18 +3,9 @@ package com.mealplanner;
 import java.util.ArrayList;
 
 public class Dish {
-    private int id;
     private String name;
     // private Recipe recipe;
-    private ArrayList<Ingredient> ingredients;
-
-    public void setID(int id) {
-        this.id = id;
-    }
-
-    public int getID() {
-        return this.id;
-    }
+    private final ArrayList<Ingredient> ingredients;
 
     public String getName() {
         return this.name;
@@ -32,11 +23,11 @@ public class Dish {
         this.name = name;
         this.ingredients = new ArrayList<>();
     }
-    
+
     public Dish() {
-        this.ingredients = new ArrayList<Ingredient>();
+        this.ingredients = new ArrayList<>();
     }
-    
+
     public Dish(String name, ArrayList<Ingredient> ingredients) {
         this.name = name;
         this.ingredients = ingredients;
@@ -44,10 +35,27 @@ public class Dish {
 
     public void print() {
         System.out.println(this.name);
-        System.out.println("Ingredients: ");
+        System.out.println("Ingredients");
+        System.out.println("-----------------");
         for (Ingredient ingredient : this.ingredients) {
             ingredient.print();
         }
         System.out.println();
+    }
+
+    public boolean equals(Dish dish) {
+        if (dish.ingredients.size() != this.ingredients.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < this.ingredients.size(); i++) {
+            Ingredient thisIngredient = this.ingredients.get(i);
+            Ingredient comparingDishIngredient = dish.ingredients.get(i);
+            if (!comparingDishIngredient.equals(thisIngredient)) {
+                return false;
+            }
+        }
+
+        return dish.name.equals(this.name);
     }
 }

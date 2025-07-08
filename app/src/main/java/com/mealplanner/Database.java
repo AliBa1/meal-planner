@@ -8,14 +8,13 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 public class Database {
     private ObjectMapper mapper = new ObjectMapper();
     private File file;
 
-    public Database(boolean isForTesting) {
+    public Database(boolean testing) {
         try {
-            if (isForTesting) {
+            if (testing) {
                 File testDatabaseFile = new File("testdb.json");
                 if (testDatabaseFile.exists()) {
                     testDatabaseFile.delete();
@@ -27,9 +26,12 @@ public class Database {
             }
 
             if (file.length() == 0) {
-                FileWriter writer = new FileWriter(file);
-                writer.write("[]");
-                writer.close();
+                try (FileWriter writer = new FileWriter(file);) {
+                    writer.write("[]");
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace(System.err);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace(System.err);
@@ -50,9 +52,31 @@ public class Database {
 
     public boolean updateDish(Dish oldDish, Dish updatedDish) {
         try {
-            // statement.execute(String.format("UPDATE dishes SET name = '%s' WHERE name =
-            // '%s'", updatedDish.getName(),
-            // oldDish.getName()));
+            boolean removed = deleteDish(oldDish);
+            if (!removed) {
+                return false;
+            }
+
+            ArrayList<Dish> dishes = getAllDishes();
+            dishes.add(updatedDish);
+            mapper.writeValue(file, dishes);
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteDish(Dish dishToDelete) {
+        try {
+            ArrayList<Dish> dishes = getAllDishes();
+            boolean removed = dishes.removeIf(dish -> dish.equals(dishToDelete));
+
+            if (!removed) {
+                return false;
+            }
+
+            mapper.writeValue(file, dishes);
         } catch (Exception e) {
             e.printStackTrace(System.err);
             return false;
@@ -64,7 +88,7 @@ public class Database {
         try {
             ArrayList<Dish> dishes = getAllDishes();
             for (Dish dish : dishes) {
-                if (dish.getName().equals(name)) {
+                if (dish.getName().equalsIgnoreCase(name)) {
                     return dish;
                 }
             }
@@ -78,9 +102,9 @@ public class Database {
         try {
             ArrayList<Dish> dishes = new ArrayList<>(Arrays.asList(mapper.readValue(file, Dish[].class)));
             return dishes;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace(System.err);
         }
-        return new ArrayList<Dish>();
+        return new ArrayList<>();
     }
 }

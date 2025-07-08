@@ -3,7 +3,6 @@
  */
 package com.mealplanner;
 
-
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +22,7 @@ class DatabaseTest {
         Database testdb = new Database(true);
         assertNull(testdb.getDishByName("Pizza"));
     }
-    
+
     @Test
     void dbAddDish() {
         Database testdb = new Database(true);
@@ -32,7 +31,7 @@ class DatabaseTest {
         assertTrue(testdb.addDish(pizza));
         // assertEquals(pizza.getName(), testdb.getDishByName("Pizza").getName());
     }
-    
+
     @Test
     void dbGetDishByName() {
         Database testdb = new Database(true);
@@ -41,16 +40,16 @@ class DatabaseTest {
         assertTrue(testdb.addDish(pizza));
         assertEquals(pizza.getName(), testdb.getDishByName("Pizza").getName());
     }
-    
+
     // @Test
     // void dbAddDuplicateDish() {
-    //     Database testdb = new Database(true);
-    //     // assertNull(testdb.getDishByName("Pizza"));
-    //     Dish pizza = new Dish("Pizza");
-    //     assertTrue(testdb.addDish(pizza));
-    //     assertFalse(testdb.addDish(pizza));
+    // Database testdb = new Database(true);
+    // // assertNull(testdb.getDishByName("Pizza"));
+    // Dish pizza = new Dish("Pizza");
+    // assertTrue(testdb.addDish(pizza));
+    // assertFalse(testdb.addDish(pizza));
     // }
-    
+
     @Test
     void dbUpdateDish() {
         Database testdb = new Database(true);
@@ -60,7 +59,7 @@ class DatabaseTest {
         Dish fish = new Dish("Fish");
         assertTrue(testdb.updateDish(pizza, fish));
     }
-    
+
     @Test
     void dbGetAllDishes() {
         Database testdb = new Database(true);
@@ -72,5 +71,20 @@ class DatabaseTest {
         assertTrue(testdb.addDish(taco));
         ArrayList<Dish> allDishes = testdb.getAllDishes();
         assertEquals(3, allDishes.size());
+    }
+
+    @Test
+    void dbDeleteDish() {
+        Database testdb = new Database(true);
+        Dish pizza = new Dish("Pizza");
+        pizza.addIngredient(new Ingredient("Cheese", Unit.CUP, 8));
+        testdb.addDish(pizza);
+        ArrayList<Dish> dishes = testdb.getAllDishes();
+        int originalDishesSize = dishes.size();
+        assertTrue(testdb.deleteDish(pizza));
+        dishes = testdb.getAllDishes();
+        int newDishesSize = dishes.size();
+        assertEquals(originalDishesSize - 1, newDishesSize);
+        assertTrue(testdb.getDishByName("Pizza") == null);
     }
 }

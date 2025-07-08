@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class App {
-    private Database db;
-    private Scanner scanner = new Scanner(System.in);
+    private final Database db;
+    private final Scanner scanner = new Scanner(System.in);
 
     public App(boolean isTest) {
         if (isTest) {
@@ -36,61 +36,67 @@ public class App {
             String input = scanner.nextLine();
             input = input.trim().toLowerCase();
             switch (input) {
-                case "exit":
+                case "exit" -> {
                     return;
-                case "help":
+                }
+                case "help" -> {
                     System.out.println("Meal Planner Commands");
                     System.out.println("print dishes: view all saved dishes");
                     System.out.println("add dish: adds a dish to the list of dishes");
                     System.out.println("get dish: gets a dish by name and prints it");
                     System.out.println("edit dish: edit a dish");
+                    System.out.println("del dish: delete a dish");
                     System.out.println();
-                    break;
-                case "print dishes":
+                }
+                case "print dishes" -> {
                     printDishes();
-                    break;
-                case "add dish":
-                    String dishName = getDishName();
-
-                    // System.out.println("[quantity] [unit] [name] (ex: 0.75 cups Milk) ");
-                    // System.out.println("Ingredient: ");
-
-                    addDish(dishName);
-                    break;
-                case "get dish":
-                    dishName = getDishName();
-
-                    Dish retrievedDish = db.getDishByName(dishName);
-                    retrievedDish.print();
-                    break;
-                case "edit dish":
-                    dishName = getDishName();
-
-                    Dish oldDish = db.getDishByName(dishName);
-                    oldDish.print();
-
-                    System.out.print("New Dish Name: ");
-                    String newDishName = scanner.nextLine().trim();
-                    Dish newDish = new Dish(newDishName);
-                    db.updateDish(oldDish, newDish);
-                    break;
-                default:
+                }
+                case "add dish" -> {
+                    addDish();
+                }
+                case "get dish" -> {
+                    getDish();
+                }
+                case "edit dish" -> {
+                    editDish();
+                }
+                case "del dish" -> {
+                    deleteDish();
+                }
+                default -> {
                     System.out.println("That command doesn't exist! Try again.");
-                    break;
+                }
             }
         }
         scanner.close();
     }
 
-    private String getDishName() {
+    private String promptDishName() {
         System.out.print("Dish Name: ");
         String dishName = scanner.nextLine().trim();
         return dishName;
     }
 
-    // chatgpt version
-    public boolean addDish(String name) {
-        Dish newDish = new Dish(name);
+    public void printDishes() {
+        ArrayList<Dish> dishes = db.getAllDishes();
+
+        if (dishes.isEmpty()) {
+            System.out.println("You have not added any dishes");
+            System.out.println("Use the 'add dish' command to add a dish");
+            return;
+        }
+
+        System.out.println("Dishes");
+        System.out.println("------------");
+        for (Dish dish : dishes) {
+            System.out.println(dish.getName());
+        }
+        System.out.println("");
+    }
+
+    public boolean addDish() {
+        String dishName = promptDishName();
+        Dish newDish = new Dish(dishName);
 
         System.out.println("Enter ingredients (submit with an empty name to finish)");
         System.out.println("Available units: " + Arrays.toString(Unit.values()));
@@ -130,10 +136,7 @@ public class App {
                 }
             }
 
-            Ingredient ingredient = new Ingredient(ingredientName);
-            ingredient.setQuantity(quantity);
-            ingredient.setUnit(unit);
-
+            Ingredient ingredient = new Ingredient(ingredientName, unit, quantity);
             newDish.addIngredient(ingredient);
             System.out.println("✓ Ingredient added.\n");
         }
@@ -147,51 +150,40 @@ public class App {
         return success;
     }
 
-    // public boolean addDish(String name) {
-    // Dish newDish = new Dish(name);
-    //
-    // System.out.println("Enter ingredients (submit with an empty name to
-    // finish)");
-    //
-    // while (true) {
-    // System.out.print("Ingredient Name: ");
-    // String ingredientName = scanner.nextLine().trim();
-    // if (ingredientName.isEmpty()) {
-    // break;
-    // }
-    //
-    // System.out.print("Quantity (ex: 0.5): ");
-    // float quantity = scanner.nextFloat();
-    // scanner.nextLine();
-    //
-    // System.out.print("Unit (ex: grams, cups): ");
-    // String unitInput = scanner.nextLine().trim().toUpperCase();
-    // Unit unit = Unit.valueOf(unitInput);
-    //
-    // Ingredient ingredient = new Ingredient(ingredientName);
-    // ingredient.setQuantity(quantity);
-    // ingredient.setUnit(unit);
-    //
-    // newDish.addIngredient(ingredient);
-    // }
-    // return db.addDish(newDish);
-    // }
+    private void getDish() {
+        String dishName = promptDishName();
+        Dish retrievedDish = db.getDishByName(dishName);
+        if (retrievedDish == null) {
+            System.out.println("The dish '" + dishName + "' doesn't exist!");
+            return;
+        }
+        retrievedDish.print();
+    }
 
-    public void printDishes() {
-        ArrayList<Dish> dishes = db.getAllDishes();
+    private void editDish() {
+        String dishName = promptDishName();
+        Dish oldDish = db.getDishByName(dishName);
+        oldDish.print();
 
-        if (dishes.isEmpty()) {
-            System.out.println("You have not added any dishes");
-            System.out.println("Use the 'add dish' command to add a dish");
+        // TODO: ask to edit name or ingredients
+
+        System.out.print("New Dish Name: ");
+        String newDishName = scanner.nextLine().trim();
+        Dish newDish = new Dish(newDishName);
+        db.updateDish(oldDish, newDish);
+    }
+
+    private void deleteDish() {
+        String dishName = promptDishName();
+        Dish dishToDelete = db.getDishByName(dishName);
+        dishToDelete.print();
+
+        System.out.print("Are you sure you want to delete this dish? (Y/n): ");
+        String userDeleteSelection = scanner.nextLine().trim();
+        if (!userDeleteSelection.equals("Y")) {
             return;
         }
 
-        System.out.println("Dishes");
-        System.out.println("------------");
-        for (Dish dish : dishes) {
-            System.out.println(dish.getName());
-        }
-        System.out.println("");
+        db.deleteDish(dishToDelete);
     }
-
 }

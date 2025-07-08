@@ -15,5 +15,6 @@ public enum Unit {
     CAN,
     BUNCH,
     STICK,
-    ITSELF
+    PAIR,
+    COUNT
 }

@@ -1,12 +1,23 @@
 package com.mealplanner;
 
+import java.text.DecimalFormat;
+
 public class Ingredient {
     private String name;
     private Unit unit;
     private float quantity;
 
+    public Ingredient() {
+    }
+
     public Ingredient(String name) {
         this.name = name;
+    }
+
+    public Ingredient(String name, Unit unit, float quantity) {
+        this.name = name;
+        this.unit = unit;
+        this.quantity = quantity;
     }
 
     public String getName() {
@@ -30,10 +41,21 @@ public class Ingredient {
     }
 
     public void print() {
-        if (this.unit == Unit.ITSELF) {
-            System.out.println(this.quantity + " " + this.name);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        if (this.unit == Unit.COUNT) {
+            System.out.println(decimalFormat.format(this.quantity) + " " + this.name);
         } else {
-            System.out.println(this.quantity + " " + this.unit.toString().toLowerCase() + "'s of " + this.name);
+            System.out.println(
+                    decimalFormat.format(this.quantity) +
+                            " " +
+                            this.unit.toString().toLowerCase() +
+                            "(s) of " +
+                            this.name);
         }
+    }
+
+    public boolean equals(Ingredient ingredient) {
+        return ingredient.name.equals(this.name) && ingredient.unit == this.unit
+                && ingredient.quantity == this.quantity;
     }
 }
