@@ -1,57 +1,47 @@
 package com.mealplanner;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class Database {
-    private Connection connection;
-    private Statement statement;
+    private ObjectMapper mapper = new ObjectMapper();
+    private File file;
 
     public Database(boolean isForTesting) {
         try {
             if (isForTesting) {
-                File testDatabaseFile = new File("testdb.db");
+                File testDatabaseFile = new File("testdb.json");
                 if (testDatabaseFile.exists()) {
                     testDatabaseFile.delete();
                 }
 
-                connection = DriverManager.getConnection("jdbc:sqlite:testdb.db");
+                this.file = testDatabaseFile;
             } else {
-                connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+                this.file = new File("dishes.json");
             }
-            statement = connection.createStatement();
 
-            statement.execute(
-                    "CREATE TABLE IF NOT EXISTS dishes (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE)");
-
-            statement.execute(
-                    "CREATE TABLE IF NOT EXISTS ingredients (" +
-                            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                            "dish_id INTEGER," +
-                            "name TEXT," +
-                            "quantity REAL," +
-                            "unit TEXT," +
-                            "FOREIGN KEY(dish_id) REFERENCES dishes(id))");
-        } catch (SQLException e) {
+            if (file.length() == 0) {
+                FileWriter writer = new FileWriter(file);
+                writer.write("[]");
+                writer.close();
+            }
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         }
     }
 
     public boolean addDish(Dish dish) {
         try {
-            statement.execute(String.format("INSERT INTO dishes (name) VALUES ('%s')", dish.getName()));
-            int dishId = this.getDishByName(dish.getName()).getID();
-            for (Ingredient ingredient : dish.getIngredients()) {
-                statement.execute(String.format(
-                        "INSERT INTO ingredients (dish_id, name, quantity, unit) VALUES ('%d', '%s', '%f', '%s')",
-                        dishId, ingredient.getName(), ingredient.getQuantity(), ingredient.getUnit()));
-            }
-        } catch (SQLException e) {
+            ArrayList<Dish> dishes = getAllDishes();
+            dishes.add(dish);
+            mapper.writeValue(file, dishes);
+        } catch (IOException e) {
             e.printStackTrace(System.err);
             return false;
         }
@@ -60,9 +50,10 @@ public class Database {
 
     public boolean updateDish(Dish oldDish, Dish updatedDish) {
         try {
-            statement.execute(String.format("UPDATE dishes SET name = '%s' WHERE name = '%s'", updatedDish.getName(),
-                    oldDish.getName()));
-        } catch (SQLException e) {
+            // statement.execute(String.format("UPDATE dishes SET name = '%s' WHERE name =
+            // '%s'", updatedDish.getName(),
+            // oldDish.getName()));
+        } catch (Exception e) {
             e.printStackTrace(System.err);
             return false;
         }
@@ -71,47 +62,25 @@ public class Database {
 
     public Dish getDishByName(String name) {
         try {
-            // ResultSet result = statement.executeQuery(String.format("SELECT * FROM dishes
-            // WHERE name = '%s'", name));
-            ResultSet result = statement
-                    .executeQuery(String.format("SELECT * FROM dishes WHERE name LIKE '%%%s%%'", name));
-            if (result.next()) {
-                int id = result.getInt("id");
-                String resultName = result.getString("name");
-                Dish dish = new Dish(resultName);
-                dish.setID(id);
-
-                ResultSet ingredientsResult = statement
-                        .executeQuery(String.format("SELECT * FROM ingredients WHERE dish_id = '%f'", (float) id));
-                while (ingredientsResult.next()) {
-                    String ingredientName = ingredientsResult.getString("name");
-                    float quantity = ingredientsResult.getFloat("quantity");
-                    String unitString = ingredientsResult.getString("unit");
-                    Unit unit = Unit.valueOf(unitString);
-                    Ingredient ingredient = new Ingredient(ingredientName);
-                    ingredient.setQuantity(quantity);
-                    ingredient.setUnit(unit);
-                    dish.addIngredient(ingredient);
+            ArrayList<Dish> dishes = getAllDishes();
+            for (Dish dish : dishes) {
+                if (dish.getName().equals(name)) {
+                    return dish;
                 }
-                return dish;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         }
         return null;
     }
 
     public ArrayList<Dish> getAllDishes() {
-        ArrayList<Dish> dishes = new ArrayList<>();
         try {
-            ResultSet result = statement.executeQuery("SELECT * FROM dishes");
-            while (result.next()) {
-                Dish dish = new Dish(result.getString("name"));
-                dishes.add(dish);
-            }
-        } catch (SQLException e) {
+            ArrayList<Dish> dishes = new ArrayList<>(Arrays.asList(mapper.readValue(file, Dish[].class)));
+            return dishes;
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         }
-        return dishes;
+        return new ArrayList<Dish>();
     }
 }

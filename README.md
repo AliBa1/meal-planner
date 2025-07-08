@@ -46,4 +46,4 @@ REPL
 
 ## Database
 
-SQLite
+Switched to a JSON file as a NoSQL database works better for this use case

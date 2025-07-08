@@ -32,6 +32,15 @@ public class Dish {
         this.name = name;
         this.ingredients = new ArrayList<>();
     }
+    
+    public Dish() {
+        this.ingredients = new ArrayList<Ingredient>();
+    }
+    
+    public Dish(String name, ArrayList<Ingredient> ingredients) {
+        this.name = name;
+        this.ingredients = ingredients;
+    }
 
     public void print() {
         System.out.println(this.name);

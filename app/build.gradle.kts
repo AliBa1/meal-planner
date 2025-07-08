@@ -25,14 +25,11 @@ dependencies {
     implementation(libs.guava)
 
     implementation("org.xerial:sqlite-jdbc:3.50.2.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.4")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
+java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
 
 application {
     // Define the main class for the application.
@@ -42,8 +39,11 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+
+    testLogging {
+        events("passed", "skipped", "failed", "standardOut", "standardError")
+        showStandardStreams = true
+    }
 }
 
-tasks.named<JavaExec>("run") {
-    standardInput = System.`in`
-}
+tasks.named<JavaExec>("run") { standardInput = System.`in` }
