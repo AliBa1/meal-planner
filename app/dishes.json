@@ -1,1 +1,83 @@
-[]
+[
+  {
+    "name": "Burrito/Taco",
+    "ingredients": [
+      { "name": "Tortilla", "unit": "COUNT", "quantity": 1.0 },
+      { "name": "Cheese", "unit": "TEASPOON", "quantity": 1.0 },
+      { "name": "Beans", "unit": "CAN", "quantity": 1.0 },
+      { "name": "Rice", "unit": "CUP", "quantity": 1.0 },
+      { "name": "Sour Cream", "unit": "TEASPOON", "quantity": 0.5 },
+      { "name": "Chick-Fil-A Sauce", "unit": "TABLESPOON", "quantity": 1.0 },
+      { "name": "Meat", "unit": "CUP", "quantity": 1.0 },
+      { "name": "Lettice (optional)", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Avacado (optional)", "unit": "CUP", "quantity": 0.5 }
+    ]
+  },
+  {
+    "name": "Burger",
+    "ingredients": [
+      { "name": "Beef Patty", "unit": "COUNT", "quantity": 1.0 },
+      { "name": "Buns", "unit": "PAIR", "quantity": 1.0 },
+      { "name": "Cheese", "unit": "SLICE", "quantity": 1.0 },
+      { "name": "Lettice (optional)", "unit": "SLICE", "quantity": 1.0 },
+      { "name": "Chick-Fil-A Sauce", "unit": "TABLESPOON", "quantity": 1.0 },
+      { "name": "Egg (optional)", "unit": "COUNT", "quantity": 1.0 }
+    ]
+  },
+  {
+    "name": "Pizza",
+    "ingredients": [
+      { "name": "Frozen Pizza", "unit": "COUNT", "quantity": 1.0 }
+    ]
+  },
+  {
+    "name": "Egg Sandwich",
+    "ingredients": [
+      { "name": "Egg", "unit": "COUNT", "quantity": 2.0 },
+      { "name": "Bread/Buns", "unit": "COUNT", "quantity": 1.0 },
+      { "name": "Cheese (optional)", "unit": "SLICE", "quantity": 1.0 },
+      { "name": "Honey", "unit": "TEASPOON", "quantity": 1.0 }
+    ]
+  },
+  {
+    "name": "Waffles",
+    "ingredients": [
+      { "name": "Waffle/Pancake Mix", "unit": "CUP", "quantity": 2.0 },
+      { "name": "Water", "unit": "CUP", "quantity": 1.5 },
+      { "name": "Egg", "unit": "COUNT", "quantity": 1.0 },
+      { "name": "Vegetable Oil", "unit": "TABLESPOON", "quantity": 2.0 }
+    ]
+  },
+  {
+    "name": "Poke Bowl",
+    "ingredients": [
+      { "name": "Rice", "unit": "CUP", "quantity": 1.0 },
+      { "name": "Water", "unit": "CUP", "quantity": 1.0 },
+      { "name": "Ahi Tuna", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Imitation Crab", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Spicy Mayo (optional)", "unit": "TEASPOON", "quantity": 1.0 },
+      { "name": "Avacado", "unit": "TEASPOON", "quantity": 1.0 },
+      { "name": "Salmon", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Shrimp", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Seaweed Salad", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Corn", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Seasame Oil", "unit": "TABLESPOON", "quantity": 1.0 },
+      { "name": "Crispy Onion", "unit": "CUP", "quantity": 0.5 }
+    ]
+  },
+  {
+    "name": "Chipotle Bowl",
+    "ingredients": [
+      { "name": "Meat", "unit": "CUP", "quantity": 1.0 },
+      { "name": "Rice", "unit": "CUP", "quantity": 1.0 },
+      { "name": "Black Beans", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Shreadded Cheese", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Fajita Veggies", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Corn", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Onions", "unit": "CUP", "quantity": 0.25 },
+      { "name": "Lettuce (optional)", "unit": "CUP", "quantity": 0.5 },
+      { "name": "Sour Cream", "unit": "TABLESPOON", "quantity": 1.0 }
+    ]
+  }
+]
+
